@@ -1,0 +1,32 @@
+{
+  "WALLET_AGE": {
+    "circom": "walletAge/walletAge.circom",
+    "wasmHash": "sha256:TBD",
+    "zkeyHash": "sha256:TBD",
+    "verificationKeyHash": "sha256:TBD"
+  },
+  "MIN_ACTIVITY": {
+    "circom": "minActivity/minActivity.circom",
+    "wasmHash": "sha256:TBD",
+    "zkeyHash": "sha256:TBD",
+    "verificationKeyHash": "sha256:TBD"
+  },
+  "COOLDOWN": {
+    "circom": "cooldown/cooldown.circom",
+    "wasmHash": "sha256:TBD",
+    "zkeyHash": "sha256:TBD",
+    "verificationKeyHash": "sha256:TBD"
+  },
+  "TOKEN_HOLD": {
+    "circom": "tokenHold/tokenHold.circom",
+    "wasmHash": "sha256:TBD",
+    "zkeyHash": "sha256:TBD",
+    "verificationKeyHash": "sha256:TBD"
+  },
+  "ACTIVITY_CLASS": {
+    "circom": "activityClass/activityClass.circom",
+    "wasmHash": "sha256:TBD",
+    "zkeyHash": "sha256:TBD",
+    "verificationKeyHash": "sha256:TBD"
+  }
+}

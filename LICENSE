@@ -1,0 +1,30 @@
+# DUAL LICENSE
+
+ZK Eligibility SDK uses a dual licensing model:
+
+## Apache 2.0 License
+
+The following components are licensed under Apache License 2.0:
+- SDK source code (src/ directory)
+- ZK circuits (circuits/ directory)
+- Circom library (circomlib/ directory)
+- CLI tooling (cli/ directory)
+- Test infrastructure (tests/ directory)
+- Documentation files (README.md, IMPLEMENTATION_GUIDE.md, RULES.md, SECURITY.md)
+
+See LICENSE-APACHE2.0 for the full Apache 2.0 license text.
+
+## MIT License
+
+The following components are licensed under MIT License:
+- Smart contracts (contracts/ directory)
+
+See LICENSE-MIT for the full MIT license text.
+
+## Usage
+
+- If you are using the SDK for ZK eligibility checking, the Apache 2.0 license applies.
+- If you are deploying the smart contracts or integrating with the verifier contracts, the MIT license applies.
+- You may use both licenses depending on which components you are using.
+
+For more details, see the respective LICENSE files.
