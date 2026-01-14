@@ -43,6 +43,30 @@ The wallet's first outbound transaction block < thresholdBlock
 |--------|-------|---------|
 | `isValid` | 0 or 1 | 1 if statement is true, 0 otherwise |
 
+### EXAMPLE API USAGE
+
+import { ZKEligibilitySDK } from "zk-eligibility-sdk";
+
+const wallet = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+
+const result = await ZKEligibilitySDK.prove(
+  "WALLET_AGE",
+  wallet,
+  {
+    thresholdBlock: 15_000_000
+  }
+);
+
+if (result.isValid) {
+  console.log("Wallet is old enough ✅");
+} else {
+  console.log("Not eligible:", result.reason);
+}
+
+### EXAMPLE CLI USAGE
+
+npx zkesdk prove WALLET_AGE 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 "{\"thresholdBlock\": 1000000}"
+
 ### What Is Hidden
 - ✅ Exact wallet creation time
 - ✅ Exact first transaction block
@@ -101,6 +125,28 @@ Wallet's outbound transaction count >= minTx
 - `minTx = 0` → always true (rejected as pointless)
 - Contract wallets with high tx counts → processed normally
 
+### EXAMPLE API USAGE
+
+import { ZKEligibilitySDK } from "zk-eligibility-sdk";
+
+const wallet = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+
+const result = await ZKEligibilitySDK.prove(
+  "MIN_ACTIVITY",
+  wallet,
+  {
+    minTx: 10
+  }
+);
+
+if (result.isValid) {
+  console.log("Wallet is active ✅");
+}
+
+### EXAMPLE CLI USAGE
+
+npx zkesdk prove MIN_ACTIVITY 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 '{"minTx":10}'
+
 ### Use Cases
 
 ✅ Sybil resistance (filter one-time accounts)  
@@ -147,6 +193,28 @@ Current block - Last outbound tx block >= cooldownBlocks
 - Wallets with no Outbound transactions -> rule fails by default
 - `cooldownBlocks > chain age` → `isValid = 0`
 - Block reorgs → latest canonical state
+
+### EXAMPLE API USAGE
+
+import { ZKEligibilitySDK } from "zk-eligibility-sdk";
+
+const wallet = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+
+const result = await ZKEligibilitySDK.prove(
+  "COOLDOWN",
+  wallet,
+  {
+    cooldownBlocks: 50_000
+  }
+);
+
+if (result.isValid) {
+  console.log("Cooldown satisfied ✅");
+}
+
+### EXAMPLE CLI USAGE
+
+npx zkesdk prove COOLDOWN 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 '{"cooldownBlocks":50000}'
 
 ### Use Cases
 
@@ -195,6 +263,29 @@ First token receipt block + minHoldBlocks <= current block
 - Wallet never received token → `isValid = 0`
 - Token transfers out are **not** tracked (holding duration only)
 - Token burning/loss doesn't affect proof
+
+### EXAMPLE API USAGE
+
+import { ZKEligibilitySDK } from "zk-eligibility-sdk";
+
+const wallet = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+
+const result = await ZKEligibilitySDK.prove(
+  "TOKEN_HOLD",
+  wallet,
+  {
+    tokenAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", // USDC
+    minHoldBlocks: 100_000
+  }
+);
+
+if (result.isValid) {
+  console.log("Token held long enough ✅");
+}
+
+### EXAMPLE CLI USAGE
+
+npx zkesdk prove TOKEN_HOLD 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 '{"tokenAddress":"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48","minHoldBlocks":100000}'
 
 ### Use Cases
 
@@ -246,6 +337,26 @@ Classify a wallet into a coarse activity band without revealing exact metrics.
 - No outbound tx → `classId = 0`
 - Classification thresholds are hardcoded in v1.0
 - Classes are coarse by design (privacy + usability)
+
+### EXAMPLE API USAGE
+
+import { ZKEligibilitySDK } from "zk-eligibility-sdk";
+
+const wallet = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+
+const result = await ZKEligibilitySDK.prove(
+  "ACTIVITY_CLASS",
+  wallet,
+  {}
+);
+
+if (result.classId !== undefined) {
+  console.log("Activity class:", result.classId);
+}
+
+### EXAMPLE CLI USAGE 
+
+npx zkesdk prove ACTIVITY_CLASS 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 '{}'
 
 ### Use Cases
 

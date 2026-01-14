@@ -190,6 +190,7 @@ npm install zk-eligibility-sdk
 
 ### Basic Usage
 ```typescript
+import "dotenv/config";
 import { ZKEligibilitySDK } from "zk-eligibility-sdk";
 
 // Prove wallet has at least 10 transactions
@@ -208,13 +209,13 @@ if (proof.isValid) {
 ### CLI
 ```bash
 # List all rules
-npm run cli list-rules
+npx zkesdk list-rules
 
 # Generate a proof
-npm run prove MIN_ACTIVITY 0xWallet '{"minTx":10}'
+npx zkesdk prove MIN_ACTIVITY 0xWallet '{"minTx":10}'
 
 # Verify a proof
-npm run verify MIN_ACTIVITY proof.json public.json
+npx zkesdk verify MIN_ACTIVITY proof.json public.json
 ```
 
 ### On-Chain Verification
@@ -310,7 +311,7 @@ Everything else is your application's responsibility.
 
 This SDK does NOT ship with an RPC key.
 
-You must set one of the following:
+You must set one of the following (Infura is not supported in this version as of yet):
 
 - ALCHEMY_API_KEY
 - INFURA_API_KEY
