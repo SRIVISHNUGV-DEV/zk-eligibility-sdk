@@ -21,17 +21,8 @@ witness.wtns
 proof.json
 public.json
 input.json
-
-# ===============================
-# Circom build artifacts (generated)
-# Keep ONLY committed ones in src/circuits/*
-# ===============================
-**/*_js/
-**/*.sym
-**/*.r1cs
-**/*.wasm
-**/*.zkey
-
+.ptau
+.r1cs
 # ===============================
 # Logs
 # ===============================
