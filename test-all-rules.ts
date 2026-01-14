@@ -1,5 +1,6 @@
 import { ZKEligibilitySDK } from "./src";
 
+
 /**
  * Known extremely active wallet
  * Used intentionally to stress edge cases

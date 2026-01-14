@@ -33,16 +33,28 @@ export function getCircuitArtifacts(ruleId: string): CircuitArtifacts {
   }
 
   const circuitName = rule.circuitDir.toLowerCase();
+
+  // 🔧 FIX: resolve relative to SDK, NOT user project
   const base = path.join(
-    process.cwd(),
-    "src",
+    __dirname,
+    "..",
     "circuits",
     rule.circuitDir
   );
 
   return {
-    wasm: path.join(base, `${circuitName}_js`, `${circuitName}.wasm`),
-    zkey: path.join(base, `${circuitName}_final.zkey`),
-    verificationKey: path.join(base, "verification_key.json")
+    wasm: path.join(
+      base,
+      `${circuitName}_js`,
+      `${circuitName}.wasm`
+    ),
+    zkey: path.join(
+      base,
+      `${circuitName}_final.zkey`
+    ),
+    verificationKey: path.join(
+      base,
+      "verification_key.json"
+    )
   };
 }

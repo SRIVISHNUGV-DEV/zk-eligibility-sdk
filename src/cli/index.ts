@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import "dotenv/config";
 import { listRulesCommand } from "./commands/listRules";
 import { proveCommand } from "./commands/prove";
 import { verifyCommand } from "./commands/verify";
@@ -38,13 +39,13 @@ function printHelp() {
 ZK Eligibility SDK CLI
 
 Usage:
-  zk-eligibility list-rules
+  zkesdk list-rules
 
-  zk-eligibility prove <RULE_ID> <WALLET> "<PARAMS_JSON>"
+  zkesdk prove <RULE_ID> <WALLET> "<PARAMS_JSON>"
     Example:
-      zk-eligibility prove MIN_ACTIVITY 0xabc "{\\"minTx\\":10}"
+      zkesdk prove MIN_ACTIVITY 0xabc "{\\"minTx\\":10}"
 
-  zk-eligibility verify <RULE_ID> <proof.json> <public.json>
+  zkesdk verify <RULE_ID> <proof.json> <public.json>
 
 Commands:
   list-rules     List all supported eligibility rules

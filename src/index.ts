@@ -1,5 +1,4 @@
-import "dotenv/config";
-
+import  "dotenv/config";
 export { ZKEligibilitySDK } from "./sdk";
 export * from "./types/Rule";
 export * from "./types/Proof";
