@@ -3,6 +3,9 @@ import axios from 'axios'
 import { ethers } from 'ethers'
 
 const ALCHEMY_KEY = process.env.ALCHEMY_API_KEY
+if (!ALCHEMY_KEY) {
+  throw new Error("ALCHEMY_API_KEY not set in environment variables")
+}
 const url = `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`
 
 // ---------- PROVIDER ----------
