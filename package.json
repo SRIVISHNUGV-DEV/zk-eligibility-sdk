@@ -18,7 +18,6 @@
   "copy:assets": "powershell -Command \"Copy-Item -Recurse -Force src\\circuits dist\\circuits\"",
   "test": "jest",
   "test:all": "ts-node test-all-rules.ts",
-  "test:e2e": "ts-node e2e.ts",
   "dev": "ts-node src/index.ts",
   "cli": "ts-node cli/index.ts",
   "prove": "ts-node cli/index.ts prove",
@@ -26,7 +25,7 @@
   "prepublishOnly": "npm run build && npm run test:all"
 },
   "bin": {
-    "zk-eligibility": "dist/cli/index.js"
+    "zkesdk": "dist/cli/index.js"
   },
   "keywords": [
     "zero-knowledge",
@@ -47,12 +46,12 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/srivishnu-gv/zk-eligibility-sdk.git"
+    "url": "https://github.com/SRIVISHNUGV-DEV/zk-eligibility-sdk.git"
   },
   "bugs": {
-    "url": "https://github.com/srivishnu-gv/zk-eligibility-sdk/issues"
+    "url": "https://github.com/SRIVISHNUGV-DEV/zk-eligibility-sdk/issues"
   },
-  "homepage": "https://github.com/srivishnu-gv/zk-eligibility-sdk#readme",
+  "homepage": "https://github.com/SRIVISHNUGV-DEV/zk-eligibility-sdk#readme",
   "engines": {
     "node": ">=16.0.0"
   },
