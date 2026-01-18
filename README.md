@@ -185,7 +185,7 @@ Result: Fair, sybil-resistant gate. User privacy maintained.
 
 ### Installation
 ```bash
-npm install zk-eligibility-sdk
+npm install zk-eligibility-sdk@1.0.0-beta.3
 ```
 
 ### Basic Usage
