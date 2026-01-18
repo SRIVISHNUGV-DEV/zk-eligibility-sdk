@@ -78,7 +78,7 @@ export async function proveMinActivity(
     } else {
       return {
         isValid: false,
-        reason: ErrorCode.INVALID_PARAMS
+        reason: ErrorCode.PROOF_OUTPUT_FALSE
       };
     }
   } catch (err: any) {

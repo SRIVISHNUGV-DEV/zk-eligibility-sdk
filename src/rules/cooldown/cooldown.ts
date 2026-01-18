@@ -89,7 +89,7 @@ export async function proveCooldown(
     } else {
       return {
         isValid: false,
-        reason: ErrorCode.INVALID_PARAMS
+        reason: ErrorCode.PROOF_OUTPUT_FALSE
       };
     }
   } catch {

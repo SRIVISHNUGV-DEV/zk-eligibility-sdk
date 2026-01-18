@@ -95,7 +95,7 @@ export async function proveTokenHold(
     } else {
       return {
         isValid: false,
-        reason: ErrorCode.INVALID_PARAMS
+        reason: ErrorCode.PROOF_OUTPUT_FALSE
       };
     }
   } catch {
