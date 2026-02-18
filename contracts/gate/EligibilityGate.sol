@@ -27,12 +27,24 @@ contract EligibilityGate {
 
     error VerifierNotSet(bytes32 ruleId);
     error ZeroAddress();
+    error ProofExpired();
+    error ExpiryTooFar();
+    error NonceAlreadyUsed();
+    error ProofAlreadyUsed();
 
     /// -----------------------------------------------------------------------
     /// Events
     /// -----------------------------------------------------------------------
 
     event VerifierSet(bytes32 indexed ruleId, address verifier);
+    event ProofVerified(
+        bytes32 indexed ruleId,
+        address indexed verifier,
+        address indexed sender,
+        uint256 nonce,
+        bool isValid,
+        uint256 blockNumber
+    );
 
     /// -----------------------------------------------------------------------
     /// Storage
@@ -42,6 +54,12 @@ contract EligibilityGate {
 
     // ruleId => verifier contract
     mapping(bytes32 => address) public verifiers;
+
+    // ruleId => sender => last used nonce
+    mapping(bytes32 => mapping(address => uint256)) public usedNonces;
+    mapping(bytes32 => bool) public usedProofDigests;
+
+    uint256 public constant MAX_PROOF_LIFETIME = 100; // blocks
 
     /// -----------------------------------------------------------------------
     /// Structs
@@ -101,16 +119,38 @@ contract EligibilityGate {
     function verifyEligibility(
         bytes32 ruleId,
         Proof calldata proof,
-        uint256[] calldata publicSignals
-    ) external view returns (bool isValid) {
+        uint256[] calldata publicSignals,
+        uint256 nonce,
+        uint256 expiryBlock
+    ) external returns (bool isValid) {
+        // Check expiry
+        if (block.number > expiryBlock) revert ProofExpired();
+        if (expiryBlock > block.number + MAX_PROOF_LIFETIME) revert ExpiryTooFar();
+
         address verifier = verifiers[ruleId];
         if (verifier == address(0)) revert VerifierNotSet(ruleId);
 
-        return IZKVerifier(verifier).verifyProof(
+        bool ok = IZKVerifier(verifier).verifyProof(
             proof.a,
             proof.b,
             proof.c,
             publicSignals
         );
+
+        // Replay protections are enforced for valid proofs only.
+        if (ok) {
+            bytes32 digest = keccak256(
+                abi.encode(ruleId, proof.a, proof.b, proof.c, publicSignals)
+            );
+            if (usedProofDigests[digest]) revert ProofAlreadyUsed();
+            if (usedNonces[ruleId][msg.sender] >= nonce) revert NonceAlreadyUsed();
+
+            usedProofDigests[digest] = true;
+            usedNonces[ruleId][msg.sender] = nonce;
+        }
+
+        emit ProofVerified(ruleId, verifier, msg.sender, nonce, ok, block.number);
+
+        return ok;
     }
 }

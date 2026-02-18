@@ -1,15 +1,15 @@
 {
   "name": "zk-eligibility-sdk",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.8",
   "description": "Cryptographically proven eligibility proofs for Web3.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
-  ".": {
-    "types": "./dist/index.d.ts",
-    "default": "./dist/index.js"
-  }
-},
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "bin": {
     "zkesdk": "dist/cli/index.js"
   },
@@ -23,20 +23,21 @@
     "SECURITY.md"
   ],
   "scripts": {
-    "build": "tsc && npm run copy:assets",
-    "copy:assets": "cpy \"src/circuits/**\" \"dist/circuits\" --parents",
+    "build": "tsc && node ./scripts/copy-assets.mjs && node ./scripts/verify-assets.mjs",
+    "copy:assets": "node ./scripts/copy-assets.mjs",
     "test:all": "ts-node test-all-rules.ts",
+    "test:security": "ts-node tests/security-regression.ts",
+    "test:pack": "npm pack --dry-run",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "axios": "^1.6.8",
+    "axios": "^1.13.5",
     "dotenv": "^16.4.5",
     "ethers": "^6.16.0",
     "ffjavascript": "^0.2.60",
     "snarkjs": "^0.7.4"
   },
   "devDependencies": {
-    "cpy-cli": "^4.2.0",
     "typescript": "^5.4.5",
     "ts-node": "^10.9.2",
     "@types/node": "^20.11.30"

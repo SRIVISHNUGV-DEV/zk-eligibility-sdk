@@ -1,4 +1,5 @@
 import { defaultProvider } from "../../providers";
+import { ethers } from 'ethers';
 import { generateZKProof } from "../../zk/generateProof";
 import { TokenHoldParams } from "./config";
 import { LIMITS } from "../../constants/limits";
@@ -20,30 +21,47 @@ export async function proveTokenHold(
   params: TokenHoldParams
 ): Promise<TokenHoldResult> {
   // 1. Validate inputs
-  if (!walletAddress || typeof walletAddress !== "string") {
+  function isValidEthereumAddress(address: string): boolean {
+    try {
+      return ethers.isAddress(address);
+    } catch {
+      return false;
+    }
+  }
+
+  if (!walletAddress || typeof walletAddress !== "string" || !isValidEthereumAddress(walletAddress)) {
     return { isValid: false, reason: ErrorCode.INVALID_WALLET };
+  }
+
+  if (!params || typeof params !== "object") {
+    return { isValid: false, reason: ErrorCode.INVALID_PARAMS };
   }
 
   if (!params.tokenAddress || typeof params.tokenAddress !== "string") {
     return { isValid: false, reason: ErrorCode.INVALID_PARAMS };
   }
+  if (!ethers.isAddress(params.tokenAddress)) {
+    return { isValid: false, reason: ErrorCode.INVALID_PARAMS };
+  }
 
   if (
     typeof params.minHoldBlocks !== "number" ||
+    !Number.isInteger(params.minHoldBlocks) ||
     params.minHoldBlocks < 0
   ) {
     return { isValid: false, reason: ErrorCode.INVALID_PARAMS };
   }
 
   // 2. Fetch facts
+  const chainId = params.chainId ?? 1;
   const firstTokenTxBlock =
     await defaultProvider.getFirstTokenTransferInBlock(
       walletAddress,
-      params.tokenAddress
+      params.tokenAddress,
+      chainId
     );
 
-  const currentBlock =
-    await defaultProvider.getCurrentBlock();
+  const currentBlock = await defaultProvider.getCurrentBlock(chainId);
 
   // 3. Edge cases
   if (firstTokenTxBlock === null) {
@@ -58,11 +76,7 @@ export async function proveTokenHold(
     return { isValid: false, reason: ErrorCode.PARAM_OUT_OF_RANGE };
   }
 
-  if(params.minHoldBlocks === 0) {
-    return { isValid: false, reason: ErrorCode.INVALID_PARAMS };
-  }
-
-  if (params.minHoldBlocks < 0) {
+  if (params.minHoldBlocks === 0) {
     return { isValid: false, reason: ErrorCode.INVALID_PARAMS };
   }
   if (params.minHoldBlocks > LIMITS.MAX_HOLD_BLOCKS) {

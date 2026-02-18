@@ -1,32 +1,32 @@
 {
   "WALLET_AGE": {
     "circom": "walletAge/walletAge.circom",
-    "wasmHash": "sha256:TBD",
-    "zkeyHash": "sha256:TBD",
-    "verificationKeyHash": "sha256:TBD"
+    "wasmHash": "sha256:868720912b39b535329d3c8550d7eb3ac71c2bf216fe43e1559094593d02bf74",
+    "zkeyHash": "sha256:f73271d2e9abd6be15592a582e291591561656917b7e0ad732493d289a72b0fd",
+    "verificationKeyHash": "sha256:2b9c0fe62e9a6da13af87d852c3ca3d1012939c72a6065d0fdcc81c898beb247"
   },
   "MIN_ACTIVITY": {
     "circom": "minActivity/minActivity.circom",
-    "wasmHash": "sha256:TBD",
-    "zkeyHash": "sha256:TBD",
-    "verificationKeyHash": "sha256:TBD"
+    "wasmHash": "sha256:17d87eb3c0b79c459a81b306e55ebe7ba372a675acb877490156964b6db36fd7",
+    "zkeyHash": "sha256:a4b0a2b3a9cd8d4062d1e8aa0bcb799579b72cf8861ab7c28a06986441d910c6",
+    "verificationKeyHash": "sha256:929c819b4f9eb46dc1477f0e5128f0bc8741e8d029f233e7d4a1f319ef93dc11"
   },
   "COOLDOWN": {
     "circom": "cooldown/cooldown.circom",
-    "wasmHash": "sha256:TBD",
-    "zkeyHash": "sha256:TBD",
-    "verificationKeyHash": "sha256:TBD"
+    "wasmHash": "sha256:cfd85f034e2c12d336ed4e25adcde324328744e1e02e8b7113486b5187e463b7",
+    "zkeyHash": "sha256:24ebfd0ede06d40cff82285fa223c40770720064c6cd32531b62cd83ae3f1b04",
+    "verificationKeyHash": "sha256:7bb065f3ba7978e145769d0004f90506c4a5280c62484a62f59dc1f29bfe5f43"
   },
   "TOKEN_HOLD": {
     "circom": "tokenHold/tokenHold.circom",
-    "wasmHash": "sha256:TBD",
-    "zkeyHash": "sha256:TBD",
-    "verificationKeyHash": "sha256:TBD"
+    "wasmHash": "sha256:19a56b29a6f3565b2c5456dc545a9661c2381ace0bf1754e73855dc54312a16a",
+    "zkeyHash": "sha256:92b830249066e33e992ce23056a1ae12a3112679f946b82889b96ad9adb5a843",
+    "verificationKeyHash": "sha256:063cff9dfd7c946dc449f5a41118451e0e411491437a73dca8d3869a8cacb75a"
   },
   "ACTIVITY_CLASS": {
     "circom": "activityClass/activityClass.circom",
-    "wasmHash": "sha256:TBD",
-    "zkeyHash": "sha256:TBD",
-    "verificationKeyHash": "sha256:TBD"
+    "wasmHash": "sha256:863176431130a0de278732f293ea41b086745f49961ede3da9dc1034c4646478",
+    "zkeyHash": "sha256:ce29c658da9f57e64f0ede0b05b1a1a08de27f40efce860aa7cd038fb98345f5",
+    "verificationKeyHash": "sha256:ee637ab15cc9c07b8c6d17cc658dd819cae1dfc744a452a17cdbd89ddc645425"
   }
 }

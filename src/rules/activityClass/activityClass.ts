@@ -1,6 +1,8 @@
 import { defaultProvider } from "../../providers";
+import { ethers } from 'ethers';
 import { generateZKProof } from "../../zk/generateProof";
 import { ErrorCode } from "../../types/ErrorCode";
+import { ActivityClassParams } from "./config";
 
 export type ActivityClassResult =
   | {
@@ -15,15 +17,25 @@ export type ActivityClassResult =
     };
 
 export async function proveActivityClass(
-  walletAddress: string
+  walletAddress: string,
+  params?: ActivityClassParams
 ): Promise<ActivityClassResult> {
   // 1. Validate input
-  if (!walletAddress || typeof walletAddress !== "string") {
-    return { isValid: false, reason: ErrorCode.INVALID_WALLET };
+  function isValidEthereumAddress(address: string): boolean {
+    try {
+      return ethers.isAddress(address);
+    } catch {
+      return false;
+    }
   }
 
+    if (!walletAddress || typeof walletAddress !== "string" || !isValidEthereumAddress(walletAddress)) {
+      return { isValid: false, reason: ErrorCode.INVALID_WALLET };
+    }
+
   // 2. Fetch facts
-  const txCount = await defaultProvider.getTotalOutboundTxCount(walletAddress);
+  const chainId = params?.chainId ?? 1;
+  const txCount = await defaultProvider.getTotalOutboundTxCount(walletAddress, chainId);
 
   // 3. Edge cases
   if (txCount === null) {

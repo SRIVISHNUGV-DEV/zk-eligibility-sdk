@@ -345,3 +345,38 @@ That is the security contract.
 ---
 
 **For detailed rule semantics, see [RULES.md](./RULES.md).**
+
+---
+
+## Nonce Issuance & Proof Replay Protection (Operational Guidance)
+
+The on-chain gate requires `nonce` + `expiryBlock` when submitting proofs. This prevents indefinite replay of valid proofs.
+
+Operational recommendations:
+- Issue nonces from a trusted backend service that authenticates requests (e.g., API key, user session, signed challenge).
+- Nonces should be monotonic per `(ruleId, requester)` and persisted in your backend.
+- `expiryBlock` should be short (recommended <= 100 blocks) to limit replay window.
+- Record and monitor issued nonces and proof submissions; alert on repeated failures.
+
+Implementation notes:
+- The SDK provides `src/sdk/eth.ts::submitProofOnChain` to submit proofs. The SDK does not manage nonce issuance — this is application-specific.
+
+---
+
+## Distributed Rate Limiting
+
+Local in-process limiters help during development, but production must use a centralized limiter (API gateway or Redis-backed token bucket) to protect RPC providers and proof-generation resources across instances.
+
+Suggested minimal setup:
+- API Gateway (Cloud provider) with per-IP and per-API-key limits.
+- Redis-backed token bucket for shared quotas across pods (e.g., `rate-limiter-flexible`).
+- Separate quotas for lightweight RPC queries and heavy proof-generation tasks.
+
+---
+
+## Circuit Artifact Integrity
+
+Action items before production:
+- Keep `src/circuits/manifest.json` checksums updated whenever circuit artifacts change (`.wasm`, `.zkey`, `verification_key.json`).
+- Sign and publish the manifest with release artifacts. The SDK verifies checksums at runtime via `src/zk/cache.ts`.
+

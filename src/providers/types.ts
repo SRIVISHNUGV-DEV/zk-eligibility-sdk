@@ -1,14 +1,15 @@
 export interface Provider {
-  getFirstOutboundTxBlock(address: string): Promise<number | null>;
+  getFirstOutboundTxBlock(address: string, chainId?: number): Promise<number | null>;
 
-  getLastOutboundTxBlock(address: string): Promise<number | null>;
+  getLastOutboundTxBlock(address: string, chainId?: number): Promise<number | null>;
 
-  getTotalOutboundTxCount(address: string): Promise<number | null>;
+  getTotalOutboundTxCount(address: string, chainId?: number): Promise<number | null>;
 
-  getCurrentBlock(): Promise<number>;
+  getCurrentBlock(chainId?: number): Promise<number>;
 
   getFirstTokenTransferInBlock(
     walletAddress: string,
-    tokenAddress: string
+    tokenAddress: string,
+    chainId?: number
   ): Promise<number | null>;
 }

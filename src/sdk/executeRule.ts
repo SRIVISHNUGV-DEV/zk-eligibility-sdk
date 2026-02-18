@@ -34,7 +34,7 @@ export async function executeRule(
         return await proveTokenHold(wallet, params);
 
       case "ACTIVITY_CLASS":
-        return await proveActivityClass(wallet);
+        return await proveActivityClass(wallet, params);
 
       default:
         return {

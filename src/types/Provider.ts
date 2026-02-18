@@ -3,21 +3,25 @@
  */
 export interface BlockchainProvider {
   getFirstOutboundTxBlock(
-    address: string
+    address: string,
+    chainId?: number
   ): Promise<number | null>;
 
   getLastOutboundTxBlock(
-    address: string
+    address: string,
+    chainId?: number
   ): Promise<number | null>;
 
   getTotalOutboundTxCount(
-    address: string
+    address: string,
+    chainId?: number
   ): Promise<number | null>;
 
-  getCurrentBlock(): Promise<number>;
+  getCurrentBlock(chainId?: number): Promise<number>;
 
   getFirstTokenTransferInBlock(
     walletAddress: string,
-    tokenAddress: string
+    tokenAddress: string,
+    chainId?: number
   ): Promise<number | null>;
 }

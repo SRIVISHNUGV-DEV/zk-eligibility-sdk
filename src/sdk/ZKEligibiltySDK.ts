@@ -49,7 +49,7 @@ export class ZKEligibilitySDK {
           return await proveTokenHold(walletAddress, params);
 
         case "ACTIVITY_CLASS":
-          return await proveActivityClass(walletAddress);
+          return await proveActivityClass(walletAddress, params);
 
         default:
           return {

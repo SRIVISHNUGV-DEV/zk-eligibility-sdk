@@ -1,4 +1,5 @@
 import { defaultProvider } from "../../providers";
+import { ethers } from 'ethers';
 import { generateZKProof } from "../../zk/generateProof";
 import { WalletAgeParams } from "./config";
 import { LIMITS } from "../../constants/limits";
@@ -33,15 +34,29 @@ export async function proveWalletAge(
 ): Promise<WalletAgeResult> {
 
   // 1. Input validation
-  if (!walletAddress || typeof walletAddress !== "string") {
+  function isValidEthereumAddress(address: string): boolean {
+    try {
+      return ethers.isAddress(address);
+    } catch {
+      return false;
+    }
+  }
+
+  if (!walletAddress || typeof walletAddress !== "string" || !isValidEthereumAddress(walletAddress)) {
     return {
       isValid: false,
       reason: ErrorCode.INVALID_WALLET
     };
   }
-
+  if (!params || typeof params !== "object") {
+    return {
+      isValid: false,
+      reason: ErrorCode.INVALID_PARAMS
+    };
+  }
   if (
     typeof params.thresholdBlock !== "number" ||
+    !Number.isInteger(params.thresholdBlock) ||
     params.thresholdBlock <= 0
   ) {
     return {
@@ -51,9 +66,9 @@ export async function proveWalletAge(
   }
 
   // 2. Fetch blockchain fact
-  const firstTxBlock = await defaultProvider.getFirstOutboundTxBlock(walletAddress);
-
-  const currentBlock = await defaultProvider.getCurrentBlock();
+  const chainId = params.chainId ?? 1;
+  const firstTxBlock = await defaultProvider.getFirstOutboundTxBlock(walletAddress, chainId);
+  const currentBlock = await defaultProvider.getCurrentBlock(chainId);
 
   if (params.thresholdBlock > currentBlock) {
     return {
@@ -67,13 +82,6 @@ export async function proveWalletAge(
       reason: ErrorCode.PARAM_OUT_OF_RANGE
     };
   }
- if (params.thresholdBlock <= 0) {
-    return {
-      isValid: false,
-      reason: ErrorCode.INVALID_PARAMS
-    };
-  }
-
   // 3. Semantic early rejection
   if (firstTxBlock === null) {
     return {

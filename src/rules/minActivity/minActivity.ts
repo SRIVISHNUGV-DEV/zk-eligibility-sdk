@@ -1,4 +1,5 @@
 import { defaultProvider } from "../../providers";
+import { ethers } from 'ethers';
 import { generateZKProof } from "../../zk/generateProof";
 import { MinActivityParams } from "./config";
 import { LIMITS } from "../../constants/limits";
@@ -20,17 +21,30 @@ export async function proveMinActivity(
   params: MinActivityParams
 ): Promise<MinActivityResult> {
   // 1. Validate inputs
-  if (!walletAddress || typeof walletAddress !== "string") {
+  function isValidEthereumAddress(address: string): boolean {
+    try {
+      return ethers.isAddress(address);
+    } catch {
+      return false;
+    }
+  }
+
+  if (!walletAddress || typeof walletAddress !== "string" || !isValidEthereumAddress(walletAddress)) {
     return { isValid: false, reason: ErrorCode.INVALID_WALLET };
   }
 
-  if (typeof params.minTx !== "number" || params.minTx < 0) {
+  if (!params || typeof params !== "object") {
+    return { isValid: false, reason: ErrorCode.INVALID_PARAMS };
+  }
+
+  if (typeof params.minTx !== "number" || !Number.isInteger(params.minTx) || params.minTx < 0) {
     return { isValid: false, reason: ErrorCode.INVALID_PARAMS };
   }
 
   // 2. Fetch facts
-  const txCount = await defaultProvider.getTotalOutboundTxCount(walletAddress);
-  const currentBlock = await defaultProvider.getCurrentBlock();
+  const chainId = params.chainId ?? 1;
+  const txCount = await defaultProvider.getTotalOutboundTxCount(walletAddress, chainId);
+  const currentBlock = await defaultProvider.getCurrentBlock(chainId);
 
   if (currentBlock > LIMITS.MAX_BLOCK_NUMBER) {
     return { isValid: false, reason: ErrorCode.PARAM_OUT_OF_RANGE };

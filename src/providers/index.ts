@@ -21,25 +21,25 @@ export function createInfuraProvider(): Provider {
   const provider = getInfuraProvider();
 
   return {
-    getCurrentBlock: async () => {
+    getCurrentBlock: async (_chainId?: number) => {
       return provider.getBlockNumber();
     },
 
     // ⚠️ Infura DOES NOT support alchemy_getAssetTransfers
     // These are intentionally unimplemented
-    getFirstOutboundTxBlock: async () => {
+    getFirstOutboundTxBlock: async (_address: string, _chainId?: number) => {
       throw new Error("INFURA_UNSUPPORTED_METHOD");
     },
 
-    getLastOutboundTxBlock: async () => {
+    getLastOutboundTxBlock: async (_address: string, _chainId?: number) => {
       throw new Error("INFURA_UNSUPPORTED_METHOD");
     },
 
-    getTotalOutboundTxCount: async () => {
+    getTotalOutboundTxCount: async (_address: string, _chainId?: number) => {
       throw new Error("INFURA_UNSUPPORTED_METHOD");
     },
 
-    getFirstTokenTransferInBlock: async () => {
+    getFirstTokenTransferInBlock: async (_walletAddress: string, _tokenAddress: string, _chainId?: number) => {
       throw new Error("INFURA_UNSUPPORTED_METHOD");
     }
   };

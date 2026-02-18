@@ -11,4 +11,5 @@ export interface WalletAgeParams {
    * Example: 18_000_000
    */
   thresholdBlock: number;
+  chainId?: number;
 }

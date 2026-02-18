@@ -22,6 +22,13 @@ async function main() {
         await verifyCommand(args);
         break;
 
+      case "submit":
+        // Submit a proof on-chain (requires PROVIDER_URL and PRIVATE_KEY in env)
+        // Usage: zkesdk submit <RULE_NAME_OR_ID> <proof.json> <public.json> <GATE_ADDRESS> [nonce] [expiryBlock]
+        const { submitCommand } = await import('./commands/submit');
+        await submitCommand(args);
+        break;
+
       case "--help":
       case "-h":
       default:
