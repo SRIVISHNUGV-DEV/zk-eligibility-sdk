@@ -1,6 +1,6 @@
 {
   "name": "zk-eligibility-sdk",
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0-beta.9",
   "description": "Cryptographically proven eligibility proofs for Web3.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
