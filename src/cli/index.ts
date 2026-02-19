@@ -18,6 +18,11 @@ async function main() {
         await proveCommand(args);
         break;
 
+      case "onboard":
+        const { onboardCommand } = await import("./commands/onboard");
+        await onboardCommand(args);
+        break;
+
       case "verify":
         await verifyCommand(args);
         break;
@@ -46,17 +51,22 @@ function printHelp() {
 ZK Eligibility SDK CLI
 
 Usage:
-  zkesdk list-rules
+  npx zkesdk list-rules
 
-  zkesdk prove <RULE_ID> <WALLET> "<PARAMS_JSON>"
+  npx zkesdk prove <RULE_ID> <WALLET> "<PARAMS_JSON>"
     Example:
       zkesdk prove MIN_ACTIVITY 0xabc "{\\"minTx\\":10}"
 
-  zkesdk verify <RULE_ID> <proof.json> <public.json>
+  npx zkesdk onboard <WALLET> <params.json | inline JSON>
+    Example:
+      zkesdk onboard 0xabc "./onboard-params.json"
+
+  npx zkesdk verify <RULE_ID> <proof.json> <public.json>
 
 Commands:
   list-rules     List all supported eligibility rules
   prove          Generate a zero-knowledge proof
+  onboard        Run all rules and return onboarding decision
   verify         Verify a proof (off-chain)
 
 Notes:

@@ -361,6 +361,8 @@ Operational recommendations:
 Implementation notes:
 - The SDK provides `src/sdk/eth.ts::submitProofOnChain` to submit proofs. The SDK does not manage nonce issuance — this is application-specific.
 
+Additionally the SDK exposes a helper to compute canonical rule identifiers used on-chain: `src/sdk/eth.ts::makeRuleId(name)` which returns `keccak256(toUtf8Bytes(name))`. Use `makeRuleId("WALLET_AGE")` to generate the same bytes32 `ruleId` the contracts expect.
+
 ---
 
 ## Distributed Rate Limiting

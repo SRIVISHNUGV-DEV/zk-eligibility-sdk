@@ -206,6 +206,28 @@ if (proof.isValid) {
 }
 ```
 
+### SDK API Reference
+
+The SDK exposes a small set of high-level helpers for common workflows. These are the primary programmatic entry points (TypeScript):
+
+- `ZKEligibilitySDK.listRules()` : Returns an array of rule metadata (id, description, requiresParams, outputType).
+- `ZKEligibilitySDK.getRule(ruleId)` : Returns the `RuleMeta` for a rule or throws if unknown.
+- `ZKEligibilitySDK.prove(ruleId, walletAddress, params?)` : Runs witness generation + proof for a single rule and returns an `SDKResult` (either `{ isValid: true, proof, publicSignals }` or `{ isValid: false, reason }`).
+- `ZKEligibilitySDK.onboard(walletAddress, params)` : Convenience helper that runs prove+verify for all rules and returns an `OnboardResult` with per-rule `prove`/`verify` status, `failedRules`, and any `proof`/`publicSignals` produced.
+
+Lower-level utilities (advanced use):
+
+- `generateProof({ ruleId, input })` : Direct wrapper over the internal ZK proof generator (returns `{ proof, publicSignals }`).
+- `verifyProof(ruleId, proof, publicSignals)` : Verifies a proof against the verification key (returns `{ isValid: true }` or `{ isValid: false, reason }`).
+- `executeRule(ruleId, wallet, params)` : Internal dispatcher used by the CLI and SDK; prefer using `ZKEligibilitySDK.prove` in application code.
+
+If you're interacting with on-chain gates, the SDK provides Ethereum helpers in `src/sdk/eth.ts`:
+
+- `submitProofOnChain(providerOrSigner, gateAddress, ruleId, proof, publicSignals, nonce, expiryBlock, overrides?)` : Submits a proof transaction to an `EligibilityGate` contract and returns `{ txHash, wait }`.
+- `makeRuleId(name)` : Computes `keccak256` of the rule name (useful to build `bytes32` rule identifiers that match on-chain expectations).
+
+Use these APIs when you need programmatic access beyond the CLI examples below.
+
 ### CLI
 ```bash
 # List all rules
@@ -311,10 +333,10 @@ Everything else is your application's responsibility.
 
 This SDK does NOT ship with an RPC key.
 
-You must set one of the following (Infura is not supported in this version as of yet):
+You must set one of the following environment variables to provide an RPC provider key:
 
-- ALCHEMY_API_KEY
-- INFURA_API_KEY
+- `ALCHEMY_API_KEY`
+- `INFURA_API_KEY`
 
 Example:
 

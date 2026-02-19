@@ -20,6 +20,18 @@ All rules follow the same cryptographic pattern:
 
 **Key insight:** Transaction history, exact metrics, and identifiers are never revealed—only eligibility status.
 
+### Rule Identifiers (Rule IDs)
+
+Each rule has a canonical `RuleId` (string) used throughout the SDK and by on-chain gates. On-chain contracts expect a `bytes32` identifier computed as `keccak256(utf8(ruleName))`. The SDK exposes a helper `makeRuleId(name)` in `src/sdk/eth.ts` that computes the same value. Example canonical names:
+
+- `WALLET_AGE`
+- `MIN_ACTIVITY`
+- `COOLDOWN`
+- `TOKEN_HOLD`
+- `ACTIVITY_CLASS`
+
+When constructing on-chain calls, prefer using the SDK's `makeRuleId` to avoid mismatches.
+
 ---
 
 ## Rule 1: WALLET_AGE
