@@ -185,7 +185,7 @@ Result: Fair, sybil-resistant gate. User privacy maintained.
 
 ### Installation
 ```bash
-npm install zk-eligibility-sdk@1.0.0-beta.3
+npm install zk-eligibility-sdk@1.0.0-beta.9
 ```
 
 ### Basic Usage
@@ -197,7 +197,7 @@ import { ZKEligibilitySDK } from "zk-eligibility-sdk";
 const proof = await ZKEligibilitySDK.prove(
   "MIN_ACTIVITY",
   "0xWalletAddress",
-  { minTx: 10 }
+  { minTx: 10, chainId: 1 }
 );
 
 if (proof.isValid) {
@@ -236,8 +236,31 @@ npx zkesdk list-rules
 # Generate a proof
 npx zkesdk prove MIN_ACTIVITY 0xWallet '{"minTx":10}'
 
+# Run full onboarding flow (prove + verify across all rules)
+npx zkesdk onboard 0xWallet ./onboard-params.json
+
 # Verify a proof
 npx zkesdk verify MIN_ACTIVITY proof.json public.json
+
+# Submit proof on-chain (EligibilityGate)
+npx zkesdk submit WALLET_AGE proof.json public.json 0xGateAddress 1 20000000
+```
+
+### Supported Chains
+
+Current supported `chainId` values:
+
+- `1` : Ethereum Mainnet
+- `137` : Polygon Mainnet
+- `42161` : Arbitrum Mainnet
+
+Pass `chainId` inside rule params:
+
+```typescript
+await ZKEligibilitySDK.prove("WALLET_AGE", wallet, {
+  thresholdBlock: 20_000_000,
+  chainId: 137
+});
 ```
 
 ### On-Chain Verification
@@ -308,7 +331,7 @@ Everything else is your application's responsibility.
 | **Proof System** | Groth16 (BN128 curve) |
 | **Circuit Language** | Circom 2.0.0 |
 | **Verification** | Off-chain + on-chain |
-| **Supported Chains** | Ethereum (extendable) |
+| **Supported Chains** | Ethereum, Polygon, Arbitrum |
 | **Languages** | TypeScript/JavaScript |
 | **Test Coverage** | 11/11 edge cases passing |
 | **Status** | Production-ready (v1.0) |

@@ -433,7 +433,7 @@ if (ageProof.isValid && activityProof.isValid && holdProof.isValid) {
 ### What All Rules Ignore
 
 ❌ Smart contract interactions (DEX swaps, etc.)  
-❌ Non-Ethereum chains (Bitcoin, Polygon, etc.)  
+❌ Unsupported chains (e.g., Bitcoin and non-supported EVM networks)  
 ❌ Contract-to-contract calls  
 ❌ Intent or motivation  
 
