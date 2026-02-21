@@ -119,35 +119,32 @@ Result: Fair, sybil-resistant gate. User privacy maintained.
 
 ## How It Works
 
-
-┌──────────────────────────────┐
-│ User's Wallet (public)       │
-└──────────────┬───────────────┘
-               │
+```text
++------------------------------+
+| User wallet address (public) |
++--------------+---------------+
+               |
                v
-┌──────────────────────────────────────┐
-│ Blockchain Data (on-chain, public)   │ ← RPC Provider
-│ fetched via Alchemy/Infura           │
-└──────────────┬───────────────────────┘
-               │ (private processing)
-               v
-┌──────────────────────────────────────┐
-│ TypeScript SDK                       │ ← Validates inputs
-│ (verify constraints, policy)         │   Prevents abuse
-└──────────────┬───────────────────────┘
-               │ (private witness)
-               v
-┌──────────────────────────────────────┐
-│ ZK Circuit (Circom)                  │ ← Groth16 proof
-│ Cryptographic proof generation       │   generation
-└──────────────┬───────────────────────┘
-               │ (public proof)
-               v
-┌──────────────────────────────────────┐
-│ Proof + Public Signals               │ ← Verifiable by anyone
-│ (cryptographically proven)           │   Off-chain or on-chain
-└──────────────────────────────────────┘
-
++-------------------------------------------+     +------------------+
+| Blockchain data fetch (RPC: Alchemy/etc.) |<----| RPC provider     |
++----------------------+--------------------+     +------------------+
+                       |
+                       v
++-------------------------------------------+
+| SDK rule validation + witness preparation |
++----------------------+--------------------+
+                       |
+                       v
++-------------------------------------------+
+| ZK circuit proving (Groth16 / snarkjs)    |
++----------------------+--------------------+
+                       |
+                       v
++-------------------------------------------+
+| Proof + public signals                     |
+| (verifiable off-chain or on-chain)         |
++-------------------------------------------+
+```
 
 **Key insight:** Only the proof is shared. Private data never leaves the user's machine.
 
